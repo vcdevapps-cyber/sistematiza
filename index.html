@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sistematiza - Gestão Intelectual</title>
     <link rel="manifest" href="manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -10,53 +10,60 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
-        .active-link { background: #eff6ff; color: #1e40af; border-bottom: 4px solid #1e40af; }
+        
+        /* Menu Inferior Estilo Nativo */
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(5, 1fr); z-index: 100; padding-bottom: env(safe-area-inset-bottom); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 0; font-size: 10px; font-weight: 600; color: #64748b; transition: all 0.2s; }
+        .active-link { color: #1e40af !important; position: relative; }
+        .active-link::after { content: ''; position: absolute; top: 0; width: 20%; height: 3px; background: #1e40af; border-radius: 0 0 4px 4px; }
+
         @media (min-width: 768px) { 
             body { flex-direction: row; }
-            .active-link { border-bottom: none; border-right: 4px solid #1e40af; }
+            .tab-bar { position: sticky; top: 0; left: 0; width: 260px; height: 100vh; flex-direction: column; display: flex; border-top: none; border-right: 1px solid #e2e8f0; grid-template-columns: none; padding: 24px 16px; }
+            .nav-item { flex-direction: row; justify-content: flex-start; padding: 14px 16px; font-size: 14px; gap: 12px; border-radius: 12px; }
+            .active-link { background: #eff6ff; border-bottom: none; }
+            .active-link::after { display: none; }
+            .md-logo { display: block !important; margin-bottom: 32px; padding: 0 8px; }
         }
-        .prose p { margin-bottom: 1rem; line-height: 1.6; color: #475569; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
 
-    <aside class="w-full md:w-64 bg-white border-b md:border-r border-slate-200 flex flex-col h-auto md:h-screen sticky top-0 z-40">
-        <div class="p-6 hidden md:block">
-            <h1 class="text-xl font-bold flex items-center gap-2 text-blue-700 uppercase tracking-widest">
+    <aside class="tab-bar">
+        <div class="hidden md-logo">
+            <h1 class="text-xl font-black text-blue-700 uppercase tracking-widest flex items-center gap-2">
                 <i data-lucide="layers"></i> Sistematiza
             </h1>
         </div>
 
-        <nav class="flex md:flex-col overflow-x-auto px-4 py-2 md:space-y-1 flex-1 bg-white">
-            <button onclick="filterNotes('all', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 font-medium active-link min-w-max">
-                <i data-lucide="layout-grid" class="w-5 h-5"></i> <span>Geral</span>
-            </button>
-            <button onclick="filterNotes('📥 Entrada', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 min-w-max">
-                <i data-lucide="inbox" class="w-5 h-5"></i> <span>Entrada</span>
-            </button>
-            <button onclick="filterNotes('✍️ Escrita', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 min-w-max">
-                <i data-lucide="pen-tool" class="w-5 h-5"></i> <span>Escrita</span>
-            </button>
-            <button onclick="filterNotes('🤖 IA', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 min-w-max">
-                <i data-lucide="cpu" class="w-5 h-5"></i> <span>Lab / IA</span>
-            </button>
-            <button onclick="showAbout(this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 min-w-max border-t md:border-t-0 md:mt-4 text-blue-600">
-                <i data-lucide="help-circle" class="w-5 h-5"></i> <span>Sobre o App</span>
-            </button>
-        </nav>
+        <button onclick="filterNotes('all', this)" class="nav-item active-link">
+            <i data-lucide="layout-grid"></i> <span>Geral</span>
+        </button>
+        <button onclick="filterNotes('📥 Entrada', this)" class="nav-item">
+            <i data-lucide="inbox"></i> <span>Entrada</span>
+        </button>
+        <button onclick="filterNotes('✍️ Escrita', this)" class="nav-item">
+            <i data-lucide="pen-tool"></i> <span>Escrita</span>
+        </button>
+        <button onclick="filterNotes('🤖 IA', this)" class="nav-item">
+            <i data-lucide="cpu"></i> <span>Lab</span>
+        </button>
+        <button onclick="showAbout(this)" class="nav-item">
+            <i data-lucide="help-circle"></i> <span>Sobre</span>
+        </button>
     </aside>
 
-    <main class="flex-1 p-6 md:p-12 max-w-5xl mx-auto w-full flex flex-col min-h-screen">
+    <main class="flex-1 p-6 md:p-12 max-w-5xl mx-auto w-full flex flex-col min-h-screen pb-24 md:pb-12">
         
         <div id="acervoView">
             <header class="flex justify-between items-start mb-6">
                 <div>
                     <h2 id="viewTitle" class="text-5xl font-black text-slate-900 tracking-tighter">Acervo</h2>
-                    <p class="text-slate-500 text-sm font-medium uppercase tracking-widest">Gestão Local</p>
+                    <p class="text-slate-500 text-sm font-medium uppercase tracking-widest">Gestão de Conhecimento</p>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex gap-2">
                     <button onclick="openStyleModal()" class="bg-slate-200 text-slate-700 p-4 rounded-2xl hover:bg-slate-300 transition shadow-sm"><i data-lucide="scroll-text"></i></button>
-                    <button onclick="openModal()" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 shadow-2xl shadow-blue-200 hover:bg-blue-700 transition"><i data-lucide="plus"></i> <span>Novo</span></button>
+                    <button onclick="openModal()" class="bg-blue-600 text-white px-6 py-4 rounded-2xl font-bold flex items-center gap-2 shadow-2xl shadow-blue-200 hover:bg-blue-700 transition"><i data-lucide="plus"></i> <span class="hidden md:inline">Novo</span></button>
                 </div>
             </header>
 
@@ -75,63 +82,44 @@
             <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
         </div>
 
-        <div id="aboutView" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div id="aboutView" class="hidden animate-in fade-in duration-500">
             <header class="mb-10">
-                <h2 class="text-5xl font-black text-slate-900 tracking-tighter mb-2">Sobre o App</h2>
+                <h2 class="text-5xl font-black text-slate-900 tracking-tighter mb-2 uppercase">Sobre</h2>
                 <div class="h-2 w-24 bg-blue-600 rounded-full"></div>
             </header>
 
-            <article class="prose max-w-none space-y-8">
+            <article class="prose max-w-none space-y-10">
                 <section>
-                    <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2 mb-4">
-                        <i data-lucide="book-open" class="text-blue-600"></i> O que é o Sistematiza?
-                    </h3>
-                    <p>O **Sistematiza** é um ambiente digital de "Segunda Memória". Ele foi projetado para combater a dispersão de informações que afeta o trabalho intelectual contemporâneo. Ao contrário de ferramentas de nuvem complexas, este app foca na **Simplicidade**, na **Privacidade** e na **Organização Lógica**.</p>
+                    <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2 mb-4"><i data-lucide="book-open" class="text-blue-600"></i> O que é o Sistematiza?</h3>
+                    <p class="text-slate-600 text-lg leading-relaxed">O **Sistematiza** é um ambiente digital de "Segunda Memória". Ele foi projetado para combater a dispersão de informações que afeta o trabalho intelectual contemporâneo. Ao contrário de ferramentas de nuvem complexas, este app foca na **Simplicidade**, na **Privacidade** e na **Organização Lógica**.</p>
                 </section>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-6">
-                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                        <h4 class="font-bold text-blue-700 mb-2">Para o Professor</h4>
-                        <p class="text-sm">Centralize planos de aula, fragmentos de textos literários e reflexões pedagógicas. Transforme o caos de links e arquivos soltos em um acervo estruturado para suas aulas.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                        <h4 class="font-bold text-emerald-700 mb-2">Para o Pesquisador</h4>
-                        <p class="text-sm">Organize fontes primárias, fichamentos e citações. O sistema permite que você prepare o "canteiro de obras" da sua pesquisa antes mesmo de começar a redação final.</p>
-                    </div>
-                </div>
-
-                <section>
-                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Como as categorias funcionam?</h3>
-                    <ul class="space-y-4">
-                        <li class="flex gap-4">
-                            <span class="bg-blue-100 text-blue-700 p-2 rounded-lg h-fit font-bold">📥</span>
-                            <div>
-                                <h5 class="font-bold">Fluxo de Entrada (Inbox)</h5>
-                                <p class="text-sm">Use para capturas rápidas. Viu um texto num site ou teve uma ideia no meio do dia? Jogue aqui para processar depois.</p>
-                            </div>
-                        </li>
-                        <li class="flex gap-4">
-                            <span class="bg-emerald-100 text-emerald-700 p-2 rounded-lg h-fit font-bold">🗃️</span>
-                            <div>
-                                <h5 class="font-bold">Fontes e Referências</h5>
-                                <p class="text-sm">Onde reside o conhecimento de terceiros. Armazene trechos de documentos históricos, livros e artigos científicos.</p>
-                            </div>
-                        </li>
-                        <li class="flex gap-4">
-                            <span class="bg-purple-100 text-purple-700 p-2 rounded-lg h-fit font-bold">✍️</span>
-                            <div>
-                                <h5 class="font-bold">Produção e Escrita</h5>
-                                <p class="text-sm">O seu espaço autoral. Rascunhos de capítulos, ensaios e textos que você está construindo ativamente.</p>
-                            </div>
-                        </li>
-                    </ul>
+                <section class="bg-slate-900 text-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3"><i data-lucide="shield-check" class="text-blue-400"></i> Local-First: Privacidade Total</h3>
+                    <p class="text-white text-lg font-medium leading-relaxed mb-6">
+                        Este aplicativo não envia suas informações para servidores externos. Tudo o que você escreve é armazenado exclusivamente no banco de dados do seu próprio dispositivo.
+                    </p>
+                    <p class="text-slate-100 text-lg leading-relaxed">
+                        Isso garante que seu trabalho intelectual esteja protegido e sempre disponível, inclusive sem internet. Recomendamos o uso frequente da função **Exportar** para manter cópias de segurança externas.
+                    </p>
                 </section>
 
-                <section class="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-xl">
-                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
-                        <i data-lucide="shield-check" class="text-blue-400"></i> Local-First: Seus dados são seus.
-                    </h3>
-                    <p class="text-slate-300 text-sm leading-relaxed">Este app não envia suas informações para servidores externos. Tudo o que você escreve é armazenado no banco de dados local do seu próprio navegador. Isso garante total privacidade e permite o funcionamento **offline**. Lembre-se sempre de usar a função **Exportar** periodicamente para criar cópias de segurança de seu trabalho.</p>
+                <section>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6">Categorias Didáticas</h3>
+                    <div class="space-y-6">
+                        <div class="flex gap-4 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                            <span class="bg-blue-100 text-blue-700 p-3 rounded-2xl h-fit font-bold">📥</span>
+                            <div><h5 class="font-bold text-lg">Entrada (Inbox)</h5><p class="text-slate-600">Espaço para ideias brutas e capturas rápidas do cotidiano.</p></div>
+                        </div>
+                        <div class="flex gap-4 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                            <span class="bg-emerald-100 text-emerald-700 p-3 rounded-2xl h-fit font-bold">🗃️</span>
+                            <div><h5 class="font-bold text-lg">Fontes e Referências</h5><p class="text-slate-600">Onde reside o conhecimento de terceiros, documentos e fichamentos.</p></div>
+                        </div>
+                        <div class="flex gap-4 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                            <span class="bg-purple-100 text-purple-700 p-3 rounded-2xl h-fit font-bold">✍️</span>
+                            <div><h5 class="font-bold text-lg">Escrita e Produção</h5><p class="text-slate-600">O seu laboratório criativo para rascunhos e redação final.</p></div>
+                        </div>
+                    </div>
                 </section>
             </article>
         </div>
@@ -147,9 +135,9 @@
         </footer>
     </main>
 
-    <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+    <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[200]">
         <div class="bg-white w-full max-w-2xl rounded-[2.5rem] p-8 shadow-2xl">
-            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold">Novo Registro</h3><button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x"></i></button></div>
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold">Novo Registro</h3><button onclick="closeModal()" class="text-slate-400"><i data-lucide="x"></i></button></div>
             <textarea id="noteContent" rows="6" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500 text-lg" placeholder="O que deseja arquivar?"></textarea>
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <select id="category" class="w-full border border-slate-200 rounded-xl px-4 py-3 bg-white outline-none font-bold">
@@ -157,14 +145,14 @@
                 </select>
                 <input type="text" id="tags" placeholder="Tags (vírgula)" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none">
             </div>
-            <div class="flex gap-4"><button onclick="closeModal()" class="flex-1 py-4 text-slate-400 font-bold hover:bg-slate-50 rounded-2xl transition">Cancelar</button><button onclick="saveNote()" class="flex-[2] bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-100">Guardar Agora</button></div>
+            <div class="flex gap-4"><button onclick="closeModal()" class="flex-1 py-4 text-slate-400 font-bold hover:bg-slate-50 rounded-2xl transition">Cancelar</button><button onclick="saveNote()" class="flex-[2] bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-100">Guardar</button></div>
         </div>
     </div>
 
-    <div id="styleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[60]">
+    <div id="styleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[200]">
         <div class="bg-white w-full max-w-xl rounded-[2.5rem] p-8 shadow-2xl">
             <h3 class="text-2xl font-bold mb-6">Diretrizes de Estilo</h3>
-            <textarea id="styleGuide" rows="8" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Defina sua voz literária..."></textarea>
+            <textarea id="styleGuide" rows="8" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             <div class="flex justify-end gap-3"><button onclick="closeStyleModal()" class="px-6 py-3 text-slate-400 font-bold">Fechar</button><button onclick="saveStyle()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold">Salvar</button></div>
         </div>
     </div>
@@ -225,9 +213,13 @@
         function closeModal() { document.getElementById('modal').classList.replace('flex', 'hidden'); }
         function openStyleModal() { document.getElementById('styleModal').classList.replace('hidden', 'flex'); }
         function closeStyleModal() { document.getElementById('styleModal').classList.replace('flex', 'hidden'); }
+        function saveStyle() { localStorage.setItem('sistematiza_style', document.getElementById('styleGuide').value); closeStyleModal(); }
         function exportFullBackup() { const data = localStorage.getItem('sistematiza_v1'); const blob = new Blob([data], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `backup_acervo.json`; a.click(); }
         function importData(event) { const reader = new FileReader(); reader.onload = function(e) { localStorage.setItem('sistematiza_v1', e.target.result); render(); alert("Acervo restaurado!"); }; reader.readAsText(event.target.files[0]); }
-        document.addEventListener('DOMContentLoaded', render);
+        document.addEventListener('DOMContentLoaded', () => {
+            render();
+            document.getElementById('styleGuide').value = localStorage.getItem('sistematiza_style') || '';
+        });
     </script>
 </body>
 </html>
