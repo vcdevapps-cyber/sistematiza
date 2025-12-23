@@ -11,17 +11,16 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* Menu Inferior Estilo Nativo */
-        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(5, 1fr); z-index: 100; padding-bottom: env(safe-area-inset-bottom); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 0; font-size: 10px; font-weight: 600; color: #64748b; transition: all 0.2s; }
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(5, 1fr); z-index: 100; padding-bottom: env(safe-area-inset-bottom); box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.1); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 0; font-size: 10px; font-weight: 600; color: #64748b; transition: all 0.2s; border: none; background: none; cursor: pointer; }
         .active-link { color: #1e40af !important; position: relative; }
-        .active-link::after { content: ''; position: absolute; top: 0; width: 20%; height: 3px; background: #1e40af; border-radius: 0 0 4px 4px; }
+        .active-link::after { content: ''; position: absolute; top: 0; width: 30%; height: 3px; background: #1e40af; border-radius: 0 0 4px 4px; }
 
         @media (min-width: 768px) { 
             body { flex-direction: row; }
             .tab-bar { position: sticky; top: 0; left: 0; width: 260px; height: 100vh; flex-direction: column; display: flex; border-top: none; border-right: 1px solid #e2e8f0; grid-template-columns: none; padding: 24px 16px; }
             .nav-item { flex-direction: row; justify-content: flex-start; padding: 14px 16px; font-size: 14px; gap: 12px; border-radius: 12px; }
-            .active-link { background: #eff6ff; border-bottom: none; }
+            .active-link { background: #eff6ff; }
             .active-link::after { display: none; }
             .md-logo { display: block !important; margin-bottom: 32px; padding: 0 8px; }
         }
@@ -30,27 +29,12 @@
 <body class="bg-slate-50 text-slate-900">
 
     <aside class="tab-bar">
-        <div class="hidden md-logo">
-            <h1 class="text-xl font-black text-blue-700 uppercase tracking-widest flex items-center gap-2">
-                <i data-lucide="layers"></i> Sistematiza
-            </h1>
-        </div>
-
-        <button onclick="filterNotes('all', this)" class="nav-item active-link">
-            <i data-lucide="layout-grid"></i> <span>Geral</span>
-        </button>
-        <button onclick="filterNotes('📥 Entrada', this)" class="nav-item">
-            <i data-lucide="inbox"></i> <span>Entrada</span>
-        </button>
-        <button onclick="filterNotes('✍️ Escrita', this)" class="nav-item">
-            <i data-lucide="pen-tool"></i> <span>Escrita</span>
-        </button>
-        <button onclick="filterNotes('🤖 IA', this)" class="nav-item">
-            <i data-lucide="cpu"></i> <span>Lab</span>
-        </button>
-        <button onclick="showAbout(this)" class="nav-item">
-            <i data-lucide="help-circle"></i> <span>Sobre</span>
-        </button>
+        <div class="hidden md-logo"><h1 class="text-xl font-black text-blue-700 uppercase tracking-widest flex items-center gap-2"><i data-lucide="layers"></i> Sistematiza</h1></div>
+        <button onclick="filterNotes('all', this)" class="nav-item active-link"><i data-lucide="layout-grid"></i> <span>Geral</span></button>
+        <button onclick="filterNotes('📥 Entrada', this)" class="nav-item"><i data-lucide="inbox"></i> <span>Entrada</span></button>
+        <button onclick="filterNotes('✍️ Escrita', this)" class="nav-item"><i data-lucide="pen-tool"></i> <span>Escrita</span></button>
+        <button onclick="filterNotes('🤖 IA', this)" class="nav-item"><i data-lucide="cpu"></i> <span>Lab</span></button>
+        <button onclick="showAbout(this)" class="nav-item"><i data-lucide="help-circle"></i> <span>Sobre</span></button>
     </aside>
 
     <main class="flex-1 p-6 md:p-12 max-w-5xl mx-auto w-full flex flex-col min-h-screen pb-24 md:pb-12">
@@ -58,8 +42,8 @@
         <div id="acervoView">
             <header class="flex justify-between items-start mb-6">
                 <div>
-                    <h2 id="viewTitle" class="text-5xl font-black text-slate-900 tracking-tighter">Acervo</h2>
-                    <p class="text-slate-500 text-sm font-medium uppercase tracking-widest">Gestão de Conhecimento</p>
+                    <h2 id="viewTitle" class="text-5xl font-black text-slate-900 tracking-tighter italic">Acervo</h2>
+                    <p class="text-slate-500 text-sm font-bold uppercase tracking-widest">Gestão de Conhecimento</p>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="openStyleModal()" class="bg-slate-200 text-slate-700 p-4 rounded-2xl hover:bg-slate-300 transition shadow-sm"><i data-lucide="scroll-text"></i></button>
@@ -67,16 +51,23 @@
                 </div>
             </header>
 
-            <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+            <section class="grid grid-cols-1 gap-4 mb-12">
                 <button onclick="document.getElementById('importFile').click()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-blue-100 rounded-3xl hover:bg-blue-50 transition group">
                     <i data-lucide="upload-cloud" class="w-8 h-8 text-blue-600"></i>
-                    <span class="text-xl font-black text-slate-800 uppercase tracking-tight">Importar</span>
+                    <span class="text-xl font-black text-slate-800 uppercase tracking-tight">Importar Arquivo</span>
                 </button>
-                <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
-                <button onclick="exportFullBackup()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-emerald-100 rounded-3xl hover:bg-emerald-50 transition group">
-                    <i data-lucide="download-cloud" class="w-8 h-8 text-emerald-600"></i>
-                    <span class="text-xl font-black text-slate-800 uppercase tracking-tight">Exportar</span>
-                </button>
+                <input type="file" id="importFile" class="hidden" accept=".json,.txt,.md" onchange="importData(event)">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button onclick="exportTXTReport()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-emerald-100 rounded-3xl hover:bg-emerald-50 transition group">
+                        <i data-lucide="file-text" class="w-8 h-8 text-emerald-600"></i>
+                        <span class="text-lg font-black text-slate-800 uppercase tracking-tight">Exportar Texto (.txt)</span>
+                    </button>
+                    <button onclick="exportFullBackup()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-slate-100 rounded-3xl hover:bg-slate-100 transition group">
+                        <i data-lucide="database" class="w-8 h-8 text-slate-400"></i>
+                        <span class="text-lg font-black text-slate-400 uppercase tracking-tight italic">Backup do App (JSON)</span>
+                    </button>
+                </div>
             </section>
 
             <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
@@ -84,42 +75,34 @@
 
         <div id="aboutView" class="hidden animate-in fade-in duration-500">
             <header class="mb-10">
-                <h2 class="text-5xl font-black text-slate-900 tracking-tighter mb-2 uppercase">Sobre</h2>
+                <h2 class="text-5xl font-black text-slate-900 tracking-tighter mb-2 uppercase italic">Sobre</h2>
                 <div class="h-2 w-24 bg-blue-600 rounded-full"></div>
             </header>
-
             <article class="prose max-w-none space-y-10">
                 <section>
-                    <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2 mb-4"><i data-lucide="book-open" class="text-blue-600"></i> O que é o Sistematiza?</h3>
-                    <p class="text-slate-600 text-lg leading-relaxed">O **Sistematiza** é um ambiente digital de "Segunda Memória". Ele foi projetado para combater a dispersão de informações que afeta o trabalho intelectual contemporâneo. Ao contrário de ferramentas de nuvem complexas, este app foca na **Simplicidade**, na **Privacidade** e na **Organização Lógica**.</p>
+                    <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2 mb-4 italic"><i data-lucide="book-open" class="text-blue-600"></i> O que é o Sistematiza?</h3>
+                    <p class="text-slate-600 text-lg">O **Sistematiza** é um ambiente digital de "Segunda Memória". Projetado para organizar o trabalho intelectual com **Simplicidade**, **Privacidade** e **Autonomia**.</p>
                 </section>
 
                 <section class="bg-slate-900 text-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl">
-                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3"><i data-lucide="shield-check" class="text-blue-400"></i> Local-First: Privacidade Total</h3>
-                    <p class="text-white text-lg font-medium leading-relaxed mb-6">
-                        Este aplicativo não envia suas informações para servidores externos. Tudo o que você escreve é armazenado exclusivamente no banco de dados do seu próprio dispositivo.
-                    </p>
-                    <p class="text-slate-100 text-lg leading-relaxed">
-                        Isso garante que seu trabalho intelectual esteja protegido e sempre disponível, inclusive sem internet. Recomendamos o uso frequente da função **Exportar** para manter cópias de segurança externas.
-                    </p>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3"><i data-lucide="download" class="text-blue-400"></i> Exportação e Portabilidade</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-blue-400 font-black uppercase text-sm tracking-widest mb-2">1. Relatório Literário (.txt)</h4>
+                            <p class="text-white text-lg font-bold leading-relaxed">Focado na leitura e produção textual humana.</p>
+                            <p class="text-slate-100 text-sm leading-relaxed">Gera um manuscrito organizado por categorias e cronologia. Ideal para que o pesquisador possa abrir seu trabalho em qualquer editor de texto (como Word ou Google Docs) e prosseguir com a redação final de sua obra.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-800">
+                            <h4 class="text-slate-400 font-black uppercase text-sm tracking-widest mb-2">2. Backup Estruturado (.json)</h4>
+                            <p class="text-white text-lg font-bold leading-relaxed">Focado na continuidade tecnológica do aplicativo.</p>
+                            <p class="text-slate-100 text-sm leading-relaxed">Este arquivo contém a "inteligência" do seu acervo. Use-o para transferir todos os seus registros de um dispositivo para outro (celular para computador) sem perder as categorias e tags originais.</p>
+                        </div>
+                    </div>
                 </section>
 
                 <section>
-                    <h3 class="text-2xl font-bold text-slate-800 mb-6">Categorias Didáticas</h3>
-                    <div class="space-y-6">
-                        <div class="flex gap-4 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                            <span class="bg-blue-100 text-blue-700 p-3 rounded-2xl h-fit font-bold">📥</span>
-                            <div><h5 class="font-bold text-lg">Entrada (Inbox)</h5><p class="text-slate-600">Espaço para ideias brutas e capturas rápidas do cotidiano.</p></div>
-                        </div>
-                        <div class="flex gap-4 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                            <span class="bg-emerald-100 text-emerald-700 p-3 rounded-2xl h-fit font-bold">🗃️</span>
-                            <div><h5 class="font-bold text-lg">Fontes e Referências</h5><p class="text-slate-600">Onde reside o conhecimento de terceiros, documentos e fichamentos.</p></div>
-                        </div>
-                        <div class="flex gap-4 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                            <span class="bg-purple-100 text-purple-700 p-3 rounded-2xl h-fit font-bold">✍️</span>
-                            <div><h5 class="font-bold text-lg">Escrita e Produção</h5><p class="text-slate-600">O seu laboratório criativo para rascunhos e redação final.</p></div>
-                        </div>
-                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-6 italic">Utilidade ao Pesquisador e Professor</h3>
+                    <p class="text-slate-600 mb-6">O app funciona como um laboratório permanente, permitindo que o professor organize seus planos de aula e o pesquisador sistematize suas fontes antes da síntese final.</p>
                 </section>
             </article>
         </div>
@@ -129,7 +112,7 @@
                 <div class="p-4 bg-blue-100 text-blue-700 rounded-full"><i data-lucide="graduation-cap" class="w-8 h-8"></i></div>
                 <div class="text-center md:text-left">
                     <p class="text-sm font-black text-slate-800 uppercase tracking-widest">2025 • Sistematiza</p>
-                    <p class="text-slate-500 text-sm">App desenvolvido para educação pelo <span class="text-blue-700 font-extrabold italic text-sm">Professor Sérgio Araújo</span>.</p>
+                    <p class="text-slate-500 text-sm italic font-medium">App desenvolvido para educação pelo <span class="text-blue-700 font-black">Professor Sérgio Araújo</span>.</p>
                 </div>
             </div>
         </footer>
@@ -137,13 +120,13 @@
 
     <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[200]">
         <div class="bg-white w-full max-w-2xl rounded-[2.5rem] p-8 shadow-2xl">
-            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold">Novo Registro</h3><button onclick="closeModal()" class="text-slate-400"><i data-lucide="x"></i></button></div>
-            <textarea id="noteContent" rows="6" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500 text-lg" placeholder="O que deseja arquivar?"></textarea>
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold italic">Novo Registro</h3><button onclick="closeModal()" class="text-slate-400"><i data-lucide="x"></i></button></div>
+            <textarea id="noteContent" rows="6" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500 text-lg"></textarea>
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <select id="category" class="w-full border border-slate-200 rounded-xl px-4 py-3 bg-white outline-none font-bold">
                     <option value="📥 Entrada">📥 Entrada</option><option value="✍️ Escrita">✍️ Escrita / Produção</option><option value="🗃️ Fontes">🗃️ Fontes / Referências</option><option value="🤖 IA">🤖 Laboratório / IA</option>
                 </select>
-                <input type="text" id="tags" placeholder="Tags (vírgula)" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                <input type="text" id="tags" placeholder="Tags" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none">
             </div>
             <div class="flex gap-4"><button onclick="closeModal()" class="flex-1 py-4 text-slate-400 font-bold hover:bg-slate-50 rounded-2xl transition">Cancelar</button><button onclick="saveNote()" class="flex-[2] bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-100">Guardar</button></div>
         </div>
@@ -151,7 +134,7 @@
 
     <div id="styleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[200]">
         <div class="bg-white w-full max-w-xl rounded-[2.5rem] p-8 shadow-2xl">
-            <h3 class="text-2xl font-bold mb-6">Diretrizes de Estilo</h3>
+            <h3 class="text-2xl font-bold mb-6 italic">Diretrizes de Estilo</h3>
             <textarea id="styleGuide" rows="8" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             <div class="flex justify-end gap-3"><button onclick="closeStyleModal()" class="px-6 py-3 text-slate-400 font-bold">Fechar</button><button onclick="saveStyle()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold">Salvar</button></div>
         </div>
@@ -161,35 +144,17 @@
         lucide.createIcons();
         let currentFilter = 'all';
 
-        function showAbout(el) {
-            document.getElementById('acervoView').classList.add('hidden');
-            document.getElementById('aboutView').classList.remove('hidden');
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active-link'));
-            el.classList.add('active-link');
-            window.scrollTo(0,0);
-        }
-
-        function filterNotes(cat, el) {
-            currentFilter = cat;
-            document.getElementById('acervoView').classList.remove('hidden');
-            document.getElementById('aboutView').classList.add('hidden');
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active-link'));
-            el.classList.add('active-link');
-            document.getElementById('viewTitle').innerText = (cat === 'all') ? 'Acervo' : cat;
-            render();
-        }
-
         function render() {
             let notes = JSON.parse(localStorage.getItem('sistematiza_v1') || '[]');
             if(currentFilter !== 'all') notes = notes.filter(n => n.category === currentFilter);
             const container = document.getElementById('notesContainer');
             if(notes.length === 0) {
-                container.innerHTML = `<div class="col-span-full py-20 text-center text-slate-300 font-medium">Nenhum registro encontrado.</div>`;
+                container.innerHTML = `<div class="col-span-full py-20 text-center text-slate-300 font-medium italic">Sem registros.</div>`;
             } else {
                 container.innerHTML = notes.map(note => `
                     <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative group transition hover:shadow-xl">
                         <div class="flex justify-between items-start mb-4">
-                            <span class="text-[10px] font-black bg-blue-50 text-blue-600 px-3 py-1 rounded-full uppercase tracking-widest">${note.category}</span>
+                            <span class="text-[10px] font-black bg-blue-50 text-blue-600 px-3 py-1 rounded-full uppercase tracking-widest italic font-serif">${note.category}</span>
                             <button onclick="deleteNote(${note.id})" class="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                         <p class="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">${note.content}</p>
@@ -199,27 +164,55 @@
             lucide.createIcons();
         }
 
-        function saveNote() {
-            const content = document.getElementById('noteContent').value;
-            if(!content) return;
-            const note = { id: Date.now(), content, category: document.getElementById('category').value, tags: document.getElementById('tags').value.split(','), date: new Date().toLocaleString('pt-BR') };
-            const notes = JSON.parse(localStorage.getItem('sistematiza_v1') || '[]');
-            notes.unshift(note); localStorage.setItem('sistematiza_v1', JSON.stringify(notes));
-            document.getElementById('noteContent').value = ''; closeModal(); render();
+        // FUNÇÃO DE RELATÓRIO TXT
+        function exportTXTReport() {
+            const notes = JSON.parse(localStorage.getItem('sistematiza_v1') || []);
+            if(notes.length === 0) return alert("Vazio.");
+            let report = "SISTEMATIZA - RELATÓRIO LITERÁRIO\nExportado em: " + new Date().toLocaleString('pt-BR') + "\n========================================\n\n";
+            ["📥 Entrada", "✍️ Escrita", "🗃️ Fontes", "🤖 IA"].forEach(cat => {
+                const catNotes = notes.filter(n => n.category === cat);
+                if(catNotes.length > 0) {
+                    report += `\n>> CATEGORIA: ${cat.toUpperCase()}\n----------------------------------------\n`;
+                    catNotes.forEach(n => { report += `[${n.date}]\n${n.content}\n\n`; });
+                }
+            });
+            const blob = new Blob([report], {type: 'text/plain'});
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `meu_acervo_texto.txt`; a.click();
         }
 
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        if(confirm("Restaurar backup JSON?")) { localStorage.setItem('sistematiza_v1', JSON.stringify(imported)); render(); }
+                    }
+                } catch (err) {
+                    if(confirm("Arquivo de texto. Importar como nova nota?")) {
+                        const newNote = { id: Date.now(), content: e.target.result, category: "📥 Entrada", tags: ["importado"], date: new Date().toLocaleString('pt-BR') };
+                        const notes = JSON.parse(localStorage.getItem('sistematiza_v1') || '[]');
+                        notes.unshift(newNote); localStorage.setItem('sistematiza_v1', JSON.stringify(notes)); render();
+                    }
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function filterNotes(cat, el) { currentFilter = cat; document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active-link')); el.classList.add('active-link'); document.getElementById('acervoView').classList.remove('hidden'); document.getElementById('aboutView').classList.add('hidden'); document.getElementById('viewTitle').innerText = (cat === 'all') ? 'Acervo' : cat; render(); }
+        function showAbout(el) { document.getElementById('acervoView').classList.add('hidden'); document.getElementById('aboutView').classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active-link')); el.classList.add('active-link'); window.scrollTo(0,0); }
+        function saveNote() { const content = document.getElementById('noteContent').value; if(!content) return; const note = { id: Date.now(), content, category: document.getElementById('category').value, tags: document.getElementById('tags').value.split(','), date: new Date().toLocaleString('pt-BR') }; const notes = JSON.parse(localStorage.getItem('sistematiza_v1') || '[]'); notes.unshift(note); localStorage.setItem('sistematiza_v1', JSON.stringify(notes)); document.getElementById('noteContent').value = ''; closeModal(); render(); }
         function deleteNote(id) { if(confirm('Excluir?')) { const notes = JSON.parse(localStorage.getItem('sistematiza_v1')).filter(n => n.id !== id); localStorage.setItem('sistematiza_v1', JSON.stringify(notes)); render(); } }
         function openModal() { document.getElementById('modal').classList.replace('hidden', 'flex'); }
         function closeModal() { document.getElementById('modal').classList.replace('flex', 'hidden'); }
         function openStyleModal() { document.getElementById('styleModal').classList.replace('hidden', 'flex'); }
         function closeStyleModal() { document.getElementById('styleModal').classList.replace('flex', 'hidden'); }
         function saveStyle() { localStorage.setItem('sistematiza_style', document.getElementById('styleGuide').value); closeStyleModal(); }
-        function exportFullBackup() { const data = localStorage.getItem('sistematiza_v1'); const blob = new Blob([data], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `backup_acervo.json`; a.click(); }
-        function importData(event) { const reader = new FileReader(); reader.onload = function(e) { localStorage.setItem('sistematiza_v1', e.target.result); render(); alert("Acervo restaurado!"); }; reader.readAsText(event.target.files[0]); }
-        document.addEventListener('DOMContentLoaded', () => {
-            render();
-            document.getElementById('styleGuide').value = localStorage.getItem('sistematiza_style') || '';
-        });
+        function exportFullBackup() { const data = localStorage.getItem('sistematiza_v1'); const blob = new Blob([data], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `backup_sistematiza.json`; a.click(); }
+        document.addEventListener('DOMContentLoaded', () => { render(); document.getElementById('styleGuide').value = localStorage.getItem('sistematiza_style') || ''; });
     </script>
 </body>
 </html>
