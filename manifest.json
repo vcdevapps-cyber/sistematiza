@@ -1,0 +1,15 @@
+{
+  "name": "Sistematiza Gestão",
+  "short_name": "Sistematiza",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1e40af",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3593/3593971.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
