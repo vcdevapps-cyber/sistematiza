@@ -9,87 +9,91 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .active-link { background: #eff6ff; color: #1e40af; border-right: 4px solid #1e40af; }
-        @media (max-width: 768px) { .active-link { border-right: none; border-bottom: 4px solid #1e40af; } }
+        body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100 screen; }
+        .active-link { background: #eff6ff; color: #1e40af; border-bottom: 4px solid #1e40af; }
+        @media (min-width: 768px) { 
+            body { flex-direction: row; }
+            .active-link { border-bottom: none; border-right: 4px solid #1e40af; }
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col md:flex-row">
+<body class="bg-slate-50 text-slate-900">
 
-    <aside class="w-full md:w-64 bg-white border-r border-slate-200 flex flex-col h-auto md:h-screen sticky top-0 z-40">
-        <div class="p-6">
+    <aside class="w-full md:w-64 bg-white border-b md:border-r border-slate-200 flex flex-col h-auto md:h-screen sticky top-0 z-40">
+        <div class="p-6 hidden md:block">
             <h1 class="text-xl font-bold flex items-center gap-2 text-blue-700 uppercase tracking-widest">
                 <i data-lucide="layers"></i> Sistematiza
             </h1>
         </div>
 
-        <nav class="flex md:flex-col overflow-x-auto px-4 py-2 md:space-y-1 flex-1">
-            <button onclick="filterNotes('all', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 font-medium active-link">
+        <nav class="flex md:flex-col overflow-x-auto px-4 py-2 md:space-y-1 flex-1 bg-white">
+            <button onclick="filterNotes('all', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 font-medium active-link min-w-max">
                 <i data-lucide="layout-grid" class="w-5 h-5"></i> <span>Geral</span>
             </button>
-            <button onclick="filterNotes('📥 Entrada', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100">
+            <button onclick="filterNotes('📥 Entrada', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 min-w-max">
                 <i data-lucide="inbox" class="w-5 h-5"></i> <span>Entrada</span>
             </button>
-            <button onclick="filterNotes('✍️ Escrita', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100">
+            <button onclick="filterNotes('✍️ Escrita', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 min-w-max">
                 <i data-lucide="pen-tool" class="w-5 h-5"></i> <span>Escrita</span>
             </button>
-            <button onclick="filterNotes('🤖 IA', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100">
+            <button onclick="filterNotes('🤖 IA', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 min-w-max">
                 <i data-lucide="cpu" class="w-5 h-5"></i> <span>Lab / IA</span>
             </button>
         </nav>
-
-        <div class="p-4 border-t border-slate-100 space-y-2">
-            <button onclick="document.getElementById('importFile').click()" class="w-full flex items-center gap-2 text-[10px] text-slate-500 hover:text-blue-600 transition p-1">
-                <i data-lucide="upload-cloud" class="w-3 h-3"></i> Importar Acervo (.json)
-            </button>
-            <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
-            
-            <button onclick="exportFullBackup()" class="w-full flex items-center gap-2 text-[10px] text-slate-500 hover:text-blue-600 transition p-1">
-                <i data-lucide="download-cloud" class="w-3 h-3"></i> Exportar Tudo (JSON)
-            </button>
-        </div>
-
-        <div class="p-6 border-t border-slate-100 mt-auto bg-slate-50/50">
-            <div class="flex flex-col gap-1">
-                <div class="flex items-center gap-2 text-[10px] text-slate-400 font-semibold uppercase tracking-tighter">
-                    <span>2025</span>
-                    <i data-lucide="graduation-cap" class="w-3 h-3 text-blue-600"></i>
-                </div>
-                <p class="text-[10px] leading-tight text-slate-500">
-                    App desenvolvido para educação pelo <br>
-                    <span class="text-slate-800 font-bold">Professor Sérgio Araújo</span>.
-                </p>
-            </div>
-        </div>
     </aside>
 
-    <main class="flex-1 p-6 lg:p-12 max-w-5xl mx-auto w-full">
-        <header class="flex justify-between items-center mb-10">
+    <main class="flex-1 p-6 md:p-12 max-w-5xl mx-auto w-full flex flex-col">
+        
+        <header class="flex justify-between items-start mb-4">
             <div>
-                <h2 id="viewTitle" class="text-3xl font-bold text-slate-800 tracking-tight">Acervo</h2>
-                <p class="text-slate-500 text-sm">Gerenciamento Local de Conhecimento</p>
+                <h2 id="viewTitle" class="text-4xl font-black text-slate-900 tracking-tighter">Acervo</h2>
+                <p class="text-slate-500 text-sm font-medium">Gerenciamento Local de Conhecimento</p>
             </div>
             <div class="flex gap-2">
-                <button onclick="openStyleModal()" class="bg-slate-200 text-slate-700 p-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-slate-300 transition" title="Diretrizes de Estilo">
+                <button onclick="openStyleModal()" class="bg-slate-200 text-slate-700 p-4 rounded-2xl hover:bg-slate-300 transition shadow-sm">
                     <i data-lucide="scroll-text"></i>
                 </button>
-                <button onclick="openModal()" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-blue-100 hover:bg-blue-700 transition">
+                <button onclick="openModal()" class="bg-blue-600 text-white px-6 py-4 rounded-2xl font-bold flex items-center gap-2 shadow-xl shadow-blue-200 hover:bg-blue-700 transition">
                     <i data-lucide="plus"></i> <span>Novo</span>
                 </button>
             </div>
         </header>
 
-        <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-20 md:pb-0"></div>
+        <section class="flex flex-col md:flex-row gap-4 mb-10 mt-4 p-4 bg-white rounded-3xl border border-slate-100 shadow-sm">
+            <button onclick="document.getElementById('importFile').click()" class="flex-1 flex items-center justify-center gap-3 p-4 text-slate-700 hover:text-blue-700 hover:bg-blue-50 transition rounded-2xl border-2 border-dashed border-slate-200">
+                <i data-lucide="upload-cloud" class="w-6 h-6 text-blue-600"></i>
+                <span class="text-lg font-bold">Importar Acervo (.json)</span>
+            </button>
+            <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
+            
+            <button onclick="exportFullBackup()" class="flex-1 flex items-center justify-center gap-3 p-4 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 transition rounded-2xl border-2 border-dashed border-slate-200">
+                <i data-lucide="download-cloud" class="w-6 h-6 text-emerald-600"></i>
+                <span class="text-lg font-bold">Exportar Tudo (JSON)</span>
+            </button>
+        </section>
+
+        <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow"></div>
+
+        <footer class="mt-20 py-10 border-t border-slate-200 text-center md:text-left">
+            <div class="flex flex-col md:flex-row items-center justify-center md:justify-start gap-3">
+                <div class="p-3 bg-blue-100 text-blue-700 rounded-full">
+                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                </div>
+                <div class="text-sm text-slate-500">
+                    <p class="font-bold text-slate-800">2025 • Sistematiza</p>
+                    <p>App desenvolvido para educação pelo <span class="font-black text-blue-700">Professor Sérgio Araújo</span>.</p>
+                </div>
+            </div>
+        </footer>
     </main>
 
     <div id="styleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[60]">
         <div class="bg-white w-full max-w-xl rounded-[2.5rem] p-8 shadow-2xl">
-            <h3 class="text-2xl font-bold mb-2">Parâmetros de Estilo</h3>
-            <p class="text-sm text-slate-500 mb-6">Defina a "voz" padrão para suas produções e IAs.</p>
-            <textarea id="styleGuide" rows="8" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: Tom formal, uso de citações diretas..."></textarea>
+            <h3 class="text-2xl font-bold mb-6">Diretrizes de Estilo</h3>
+            <textarea id="styleGuide" rows="8" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Sua voz literária..."></textarea>
             <div class="flex justify-end gap-3">
                 <button onclick="closeStyleModal()" class="px-6 py-3 text-slate-400 font-bold">Fechar</button>
-                <button onclick="saveStyle()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Salvar Estilo</button>
+                <button onclick="saveStyle()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Salvar</button>
             </div>
         </div>
     </div>
@@ -97,12 +101,10 @@
     <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-white w-full max-w-2xl rounded-[2.5rem] p-8 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold">Processar Registro</h3>
+                <h3 class="text-2xl font-bold">Novo Registro</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x"></i></button>
             </div>
-            
             <textarea id="noteContent" rows="6" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-4 outline-none focus:ring-2 focus:ring-blue-500 text-lg" placeholder="O que deseja arquivar?"></textarea>
-            
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <select id="category" class="w-full border border-slate-200 rounded-xl px-4 py-3 bg-white outline-none">
                     <option value="📥 Entrada">📥 Entrada</option>
@@ -110,12 +112,11 @@
                     <option value="🗃️ Fontes">🗃️ Fontes / Referências</option>
                     <option value="🤖 IA">🤖 Laboratório / IA</option>
                 </select>
-                <input type="text" id="tags" placeholder="Tags (vírgula)" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                <input type="text" id="tags" placeholder="Tags" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none">
             </div>
-
             <div class="flex flex-col md:flex-row gap-3">
-                <button onclick="closeModal()" class="order-2 md:order-1 flex-1 py-4 text-slate-500 font-bold hover:bg-slate-50 rounded-2xl transition">Cancelar</button>
-                <button onclick="saveNote()" class="order-1 md:order-2 flex-[2] bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 transition shadow-lg shadow-blue-100">Arquivar Registro</button>
+                <button onclick="closeModal()" class="order-2 md:order-1 flex-1 py-4 text-slate-500 font-bold hover:bg-slate-50 rounded-2xl">Cancelar</button>
+                <button onclick="saveNote()" class="order-1 md:order-2 flex-[2] bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg shadow-lg">Salvar Agora</button>
             </div>
         </div>
     </div>
@@ -129,27 +130,24 @@
             document.getElementById('styleGuide').value = localStorage.getItem('sistematiza_style') || '';
         });
 
-        // Modais
         function openModal() { document.getElementById('modal').classList.replace('hidden', 'flex'); }
         function closeModal() { document.getElementById('modal').classList.replace('flex', 'hidden'); }
         function openStyleModal() { document.getElementById('styleModal').classList.replace('hidden', 'flex'); }
         function closeStyleModal() { document.getElementById('styleModal').classList.replace('flex', 'hidden'); }
 
-        // Estilo
         function saveStyle() {
             localStorage.setItem('sistematiza_style', document.getElementById('styleGuide').value);
-            alert("Parâmetros de Estilo salvos.");
+            alert("Estilo salvo.");
             closeStyleModal();
         }
 
-        // Import/Export
         function exportFullBackup() {
             const data = localStorage.getItem('sistematiza_v1');
             if(!data) return alert("Vazio.");
             const blob = new Blob([data], {type: 'application/json'});
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `sistematiza_backup_${Date.now()}.json`;
+            a.download = `backup_sistematiza.json`;
             a.click();
         }
 
@@ -160,7 +158,7 @@
             reader.onload = function(e) {
                 try {
                     const imported = JSON.parse(e.target.result);
-                    if(confirm("Substituir acervo atual?")) {
+                    if(confirm("Deseja importar e substituir o acervo atual?")) {
                         localStorage.setItem('sistematiza_v1', JSON.stringify(imported));
                         render();
                     }
@@ -169,7 +167,6 @@
             reader.readAsText(file);
         }
 
-        // Notas
         function saveNote() {
             const content = document.getElementById('noteContent').value;
             if(!content) return;
@@ -197,14 +194,10 @@
                     <div class="flex justify-between items-start mb-4">
                         <span class="text-[10px] font-bold bg-slate-50 text-slate-400 px-2 py-1 rounded uppercase tracking-widest">${note.category}</span>
                         <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition">
-                            <button onclick="exportMD(${note.id})" class="text-slate-400 hover:text-green-600"><i data-lucide="download" class="w-4 h-4"></i></button>
                             <button onclick="deleteNote(${note.id})" class="text-slate-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                     </div>
-                    <p class="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap line-clamp-6">${note.content}</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        ${note.tags.map(t => t ? `<span class="text-[9px] font-bold text-blue-500">#${t}</span>` : '').join('')}
-                    </div>
+                    <p class="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">${note.content}</p>
                 </div>
             `).join('');
             lucide.createIcons();
@@ -214,7 +207,6 @@
             currentFilter = cat;
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active-link'));
             el.classList.add('active-link');
-            document.getElementById('viewTitle').innerText = cat === 'all' ? 'Acervo' : cat;
             render();
         }
 
@@ -224,16 +216,6 @@
                 localStorage.setItem('sistematiza_v1', JSON.stringify(notes));
                 render();
             }
-        }
-
-        function exportMD(id) {
-            const note = JSON.parse(localStorage.getItem('sistematiza_v1')).find(n => n.id === id);
-            const md = `# ${note.category}\nData: ${note.date}\n\n${note.content}`;
-            const blob = new Blob([md], {type: 'text/markdown'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `nota_${id}.md`;
-            a.click();
         }
     </script>
 </body>
