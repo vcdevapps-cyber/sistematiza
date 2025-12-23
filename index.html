@@ -15,6 +15,7 @@
             body { flex-direction: row; }
             .active-link { border-bottom: none; border-right: 4px solid #1e40af; }
         }
+        .prose p { margin-bottom: 1rem; line-height: 1.6; color: #475569; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -39,89 +40,132 @@
             <button onclick="filterNotes('🤖 IA', this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 min-w-max">
                 <i data-lucide="cpu" class="w-5 h-5"></i> <span>Lab / IA</span>
             </button>
+            <button onclick="showAbout(this)" class="nav-item flex items-center gap-3 p-3 rounded-xl transition hover:bg-slate-100 min-w-max border-t md:border-t-0 md:mt-4 text-blue-600">
+                <i data-lucide="help-circle" class="w-5 h-5"></i> <span>Sobre o App</span>
+            </button>
         </nav>
     </aside>
 
     <main class="flex-1 p-6 md:p-12 max-w-5xl mx-auto w-full flex flex-col min-h-screen">
         
-        <header class="flex justify-between items-start mb-6">
-            <div>
-                <h2 id="viewTitle" class="text-5xl font-black text-slate-900 tracking-tighter">Acervo</h2>
-                <p class="text-slate-500 text-sm font-medium">Gerenciamento Local de Conhecimento</p>
-            </div>
-            <div class="flex gap-3">
-                <button onclick="openStyleModal()" class="bg-slate-200 text-slate-700 p-4 rounded-2xl hover:bg-slate-300 transition" title="Diretrizes de Estilo">
-                    <i data-lucide="scroll-text"></i>
-                </button>
-                <button onclick="openModal()" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 shadow-2xl shadow-blue-200 hover:bg-blue-700 transition">
-                    <i data-lucide="plus"></i> <span>Novo</span>
-                </button>
-            </div>
-        </header>
-
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
-            <button onclick="document.getElementById('importFile').click()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-blue-100 rounded-3xl hover:bg-blue-50 transition group">
-                <i data-lucide="upload-cloud" class="w-8 h-8 text-blue-600 group-hover:scale-110 transition"></i>
-                <span class="text-xl font-black text-slate-800 uppercase tracking-tight">Importar Acervo</span>
-            </button>
-            <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
-            
-            <button onclick="exportFullBackup()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-emerald-100 rounded-3xl hover:bg-emerald-50 transition group">
-                <i data-lucide="download-cloud" class="w-8 h-8 text-emerald-600 group-hover:scale-110 transition"></i>
-                <span class="text-xl font-black text-slate-800 uppercase tracking-tight">Exportar Tudo</span>
-            </button>
-        </section>
-
-        <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
-            </div>
-
-        <footer class="mt-24 py-12 border-t border-slate-200">
-            <div class="flex flex-col md:flex-row items-center gap-4">
-                <div class="p-4 bg-blue-100 text-blue-700 rounded-full">
-                    <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+        <div id="acervoView">
+            <header class="flex justify-between items-start mb-6">
+                <div>
+                    <h2 id="viewTitle" class="text-5xl font-black text-slate-900 tracking-tighter">Acervo</h2>
+                    <p class="text-slate-500 text-sm font-medium uppercase tracking-widest">Gestão Local</p>
                 </div>
+                <div class="flex gap-3">
+                    <button onclick="openStyleModal()" class="bg-slate-200 text-slate-700 p-4 rounded-2xl hover:bg-slate-300 transition shadow-sm"><i data-lucide="scroll-text"></i></button>
+                    <button onclick="openModal()" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 shadow-2xl shadow-blue-200 hover:bg-blue-700 transition"><i data-lucide="plus"></i> <span>Novo</span></button>
+                </div>
+            </header>
+
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+                <button onclick="document.getElementById('importFile').click()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-blue-100 rounded-3xl hover:bg-blue-50 transition group">
+                    <i data-lucide="upload-cloud" class="w-8 h-8 text-blue-600"></i>
+                    <span class="text-xl font-black text-slate-800 uppercase tracking-tight">Importar</span>
+                </button>
+                <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
+                <button onclick="exportFullBackup()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-emerald-100 rounded-3xl hover:bg-emerald-50 transition group">
+                    <i data-lucide="download-cloud" class="w-8 h-8 text-emerald-600"></i>
+                    <span class="text-xl font-black text-slate-800 uppercase tracking-tight">Exportar</span>
+                </button>
+            </section>
+
+            <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+
+        <div id="aboutView" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <header class="mb-10">
+                <h2 class="text-5xl font-black text-slate-900 tracking-tighter mb-2">Sobre o App</h2>
+                <div class="h-2 w-24 bg-blue-600 rounded-full"></div>
+            </header>
+
+            <article class="prose max-w-none space-y-8">
+                <section>
+                    <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2 mb-4">
+                        <i data-lucide="book-open" class="text-blue-600"></i> O que é o Sistematiza?
+                    </h3>
+                    <p>O **Sistematiza** é um ambiente digital de "Segunda Memória". Ele foi projetado para combater a dispersão de informações que afeta o trabalho intelectual contemporâneo. Ao contrário de ferramentas de nuvem complexas, este app foca na **Simplicidade**, na **Privacidade** e na **Organização Lógica**.</p>
+                </section>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-6">
+                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                        <h4 class="font-bold text-blue-700 mb-2">Para o Professor</h4>
+                        <p class="text-sm">Centralize planos de aula, fragmentos de textos literários e reflexões pedagógicas. Transforme o caos de links e arquivos soltos em um acervo estruturado para suas aulas.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                        <h4 class="font-bold text-emerald-700 mb-2">Para o Pesquisador</h4>
+                        <p class="text-sm">Organize fontes primárias, fichamentos e citações. O sistema permite que você prepare o "canteiro de obras" da sua pesquisa antes mesmo de começar a redação final.</p>
+                    </div>
+                </div>
+
+                <section>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Como as categorias funcionam?</h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-4">
+                            <span class="bg-blue-100 text-blue-700 p-2 rounded-lg h-fit font-bold">📥</span>
+                            <div>
+                                <h5 class="font-bold">Fluxo de Entrada (Inbox)</h5>
+                                <p class="text-sm">Use para capturas rápidas. Viu um texto num site ou teve uma ideia no meio do dia? Jogue aqui para processar depois.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="bg-emerald-100 text-emerald-700 p-2 rounded-lg h-fit font-bold">🗃️</span>
+                            <div>
+                                <h5 class="font-bold">Fontes e Referências</h5>
+                                <p class="text-sm">Onde reside o conhecimento de terceiros. Armazene trechos de documentos históricos, livros e artigos científicos.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="bg-purple-100 text-purple-700 p-2 rounded-lg h-fit font-bold">✍️</span>
+                            <div>
+                                <h5 class="font-bold">Produção e Escrita</h5>
+                                <p class="text-sm">O seu espaço autoral. Rascunhos de capítulos, ensaios e textos que você está construindo ativamente.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-xl">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="shield-check" class="text-blue-400"></i> Local-First: Seus dados são seus.
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">Este app não envia suas informações para servidores externos. Tudo o que você escreve é armazenado no banco de dados local do seu próprio navegador. Isso garante total privacidade e permite o funcionamento **offline**. Lembre-se sempre de usar a função **Exportar** periodicamente para criar cópias de segurança de seu trabalho.</p>
+                </section>
+            </article>
+        </div>
+
+        <footer class="mt-auto py-12 border-t border-slate-200">
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="p-4 bg-blue-100 text-blue-700 rounded-full"><i data-lucide="graduation-cap" class="w-8 h-8"></i></div>
                 <div class="text-center md:text-left">
                     <p class="text-sm font-black text-slate-800 uppercase tracking-widest">2025 • Sistematiza</p>
-                    <p class="text-slate-500 text-sm">
-                        App desenvolvido para educação pelo 
-                        <span class="text-blue-700 font-extrabold italic">Professor Sérgio Araújo</span>.
-                    </p>
+                    <p class="text-slate-500 text-sm">App desenvolvido para educação pelo <span class="text-blue-700 font-extrabold italic text-sm">Professor Sérgio Araújo</span>.</p>
                 </div>
             </div>
         </footer>
     </main>
 
-    <div id="styleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[60]">
-        <div class="bg-white w-full max-w-xl rounded-[2.5rem] p-8 shadow-2xl">
-            <h3 class="text-2xl font-bold mb-6">Diretrizes de Estilo</h3>
-            <textarea id="styleGuide" rows="8" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Defina sua voz..."></textarea>
-            <div class="flex justify-end gap-3">
-                <button onclick="closeStyleModal()" class="px-6 py-3 text-slate-400 font-bold">Fechar</button>
-                <button onclick="saveStyle()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold">Salvar</button>
-            </div>
-        </div>
-    </div>
-
     <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-white w-full max-w-2xl rounded-[2.5rem] p-8 shadow-2xl">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold tracking-tight">Novo Registro</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x"></i></button>
-            </div>
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold">Novo Registro</h3><button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x"></i></button></div>
             <textarea id="noteContent" rows="6" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500 text-lg" placeholder="O que deseja arquivar?"></textarea>
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <select id="category" class="w-full border border-slate-200 rounded-xl px-4 py-3 bg-white outline-none font-bold">
-                    <option value="📥 Entrada">📥 Entrada</option>
-                    <option value="✍️ Escrita">✍️ Escrita / Produção</option>
-                    <option value="🗃️ Fontes">🗃️ Fontes / Referências</option>
-                    <option value="🤖 IA">🤖 Laboratório / IA</option>
+                    <option value="📥 Entrada">📥 Entrada</option><option value="✍️ Escrita">✍️ Escrita / Produção</option><option value="🗃️ Fontes">🗃️ Fontes / Referências</option><option value="🤖 IA">🤖 Laboratório / IA</option>
                 </select>
                 <input type="text" id="tags" placeholder="Tags (vírgula)" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none">
             </div>
-            <div class="flex gap-4">
-                <button onclick="closeModal()" class="flex-1 py-4 text-slate-400 font-bold hover:bg-slate-50 rounded-2xl transition">Cancelar</button>
-                <button onclick="saveNote()" class="flex-[2] bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-100">Guardar Agora</button>
-            </div>
+            <div class="flex gap-4"><button onclick="closeModal()" class="flex-1 py-4 text-slate-400 font-bold hover:bg-slate-50 rounded-2xl transition">Cancelar</button><button onclick="saveNote()" class="flex-[2] bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-100">Guardar Agora</button></div>
+        </div>
+    </div>
+
+    <div id="styleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[60]">
+        <div class="bg-white w-full max-w-xl rounded-[2.5rem] p-8 shadow-2xl">
+            <h3 class="text-2xl font-bold mb-6">Diretrizes de Estilo</h3>
+            <textarea id="styleGuide" rows="8" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Defina sua voz literária..."></textarea>
+            <div class="flex justify-end gap-3"><button onclick="closeStyleModal()" class="px-6 py-3 text-slate-400 font-bold">Fechar</button><button onclick="saveStyle()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold">Salvar</button></div>
         </div>
     </div>
 
@@ -129,94 +173,61 @@
         lucide.createIcons();
         let currentFilter = 'all';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            render();
-            document.getElementById('styleGuide').value = localStorage.getItem('sistematiza_style') || '';
-        });
-
-        // Funções do Sidebar (Links Corrigidos)
-        function filterNotes(cat, el) {
-            currentFilter = cat;
-            // Atualiza visual dos links
+        function showAbout(el) {
+            document.getElementById('acervoView').classList.add('hidden');
+            document.getElementById('aboutView').classList.remove('hidden');
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active-link'));
             el.classList.add('active-link');
-            // Atualiza título da página
-            document.getElementById('viewTitle').innerText = (cat === 'all' || cat === 'Geral') ? 'Acervo' : cat;
+            window.scrollTo(0,0);
+        }
+
+        function filterNotes(cat, el) {
+            currentFilter = cat;
+            document.getElementById('acervoView').classList.remove('hidden');
+            document.getElementById('aboutView').classList.add('hidden');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active-link'));
+            el.classList.add('active-link');
+            document.getElementById('viewTitle').innerText = (cat === 'all') ? 'Acervo' : cat;
             render();
         }
 
-        // Renderização
         function render() {
             let notes = JSON.parse(localStorage.getItem('sistematiza_v1') || '[]');
             if(currentFilter !== 'all') notes = notes.filter(n => n.category === currentFilter);
-            
             const container = document.getElementById('notesContainer');
             if(notes.length === 0) {
-                container.innerHTML = `<div class="col-span-full py-20 text-center text-slate-300 font-medium">Nenhum registro encontrado nesta categoria.</div>`;
+                container.innerHTML = `<div class="col-span-full py-20 text-center text-slate-300 font-medium">Nenhum registro encontrado.</div>`;
             } else {
                 container.innerHTML = notes.map(note => `
                     <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative group transition hover:shadow-xl">
                         <div class="flex justify-between items-start mb-4">
                             <span class="text-[10px] font-black bg-blue-50 text-blue-600 px-3 py-1 rounded-full uppercase tracking-widest">${note.category}</span>
-                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition">
-                                <button onclick="deleteNote(${note.id})" class="text-slate-300 hover:text-red-500 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </div>
+                            <button onclick="deleteNote(${note.id})" class="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                         <p class="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">${note.content}</p>
-                        <div class="mt-4 flex flex-wrap gap-2">
-                            ${note.tags.map(t => t ? `<span class="text-[9px] font-bold text-slate-400">#${t}</span>` : '').join('')}
-                        </div>
                     </div>
                 `).join('');
             }
             lucide.createIcons();
         }
 
-        // Lógica de Modais
+        function saveNote() {
+            const content = document.getElementById('noteContent').value;
+            if(!content) return;
+            const note = { id: Date.now(), content, category: document.getElementById('category').value, tags: document.getElementById('tags').value.split(','), date: new Date().toLocaleString('pt-BR') };
+            const notes = JSON.parse(localStorage.getItem('sistematiza_v1') || '[]');
+            notes.unshift(note); localStorage.setItem('sistematiza_v1', JSON.stringify(notes));
+            document.getElementById('noteContent').value = ''; closeModal(); render();
+        }
+
+        function deleteNote(id) { if(confirm('Excluir?')) { const notes = JSON.parse(localStorage.getItem('sistematiza_v1')).filter(n => n.id !== id); localStorage.setItem('sistematiza_v1', JSON.stringify(notes)); render(); } }
         function openModal() { document.getElementById('modal').classList.replace('hidden', 'flex'); }
         function closeModal() { document.getElementById('modal').classList.replace('flex', 'hidden'); }
         function openStyleModal() { document.getElementById('styleModal').classList.replace('hidden', 'flex'); }
         function closeStyleModal() { document.getElementById('styleModal').classList.replace('flex', 'hidden'); }
-
-        // Dados
-        function saveNote() {
-            const content = document.getElementById('noteContent').value;
-            if(!content) return;
-            const note = { id: Date.now(), content, category: document.getElementById('category').value, tags: document.getElementById('tags').value.split(',').map(t => t.trim()), date: new Date().toLocaleString('pt-BR') };
-            const notes = JSON.parse(localStorage.getItem('sistematiza_v1') || '[]');
-            notes.unshift(note);
-            localStorage.setItem('sistematiza_v1', JSON.stringify(notes));
-            document.getElementById('noteContent').value = '';
-            closeModal();
-            render();
-        }
-
-        function deleteNote(id) {
-            if(confirm('Deseja eliminar este registo?')) {
-                const notes = JSON.parse(localStorage.getItem('sistematiza_v1')).filter(n => n.id !== id);
-                localStorage.setItem('sistematiza_v1', JSON.stringify(notes));
-                render();
-            }
-        }
-
-        function exportFullBackup() {
-            const data = localStorage.getItem('sistematiza_v1');
-            const blob = new Blob([data], {type: 'application/json'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `backup_acervo.json`;
-            a.click();
-        }
-
-        function importData(event) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                localStorage.setItem('sistematiza_v1', e.target.result);
-                render();
-                alert("Acervo restaurado!");
-            };
-            reader.readAsText(event.target.files[0]);
-        }
+        function exportFullBackup() { const data = localStorage.getItem('sistematiza_v1'); const blob = new Blob([data], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `backup_acervo.json`; a.click(); }
+        function importData(event) { const reader = new FileReader(); reader.onload = function(e) { localStorage.setItem('sistematiza_v1', e.target.result); render(); alert("Acervo restaurado!"); }; reader.readAsText(event.target.files[0]); }
+        document.addEventListener('DOMContentLoaded', render);
     </script>
 </body>
 </html>
