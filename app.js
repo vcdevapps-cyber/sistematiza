@@ -10,7 +10,7 @@ const localDB = new PouchDB('sistematiza_db_v1');
  * Substitua 'SUA_SENHA' pela senha do seu Docker.
  * Note o novo nome do banco: sistematiza_acervo
  */
-const remoteDB = new PouchDB('http://admin:j1junior@127.0.0.1:5984/sistematiza_acervo');
+const remoteDB = new PouchDB('http://admin:j1junior@192.168.0.110:5984/sistematiza_acervo');
 
 let currentFilter = 'all';
 const syncIcon = document.getElementById('sync-icon');
