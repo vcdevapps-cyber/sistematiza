@@ -66,7 +66,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button onclick="exportTXTReport()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-emerald-100 rounded-3xl hover:bg-emerald-50 transition group">
                         <i data-lucide="file-text" class="w-8 h-8 text-emerald-600"></i>
-                        <span class="text-lg font-black text-slate-800 uppercase tracking-tight">Relatório Texto (.txt)</span>
+                        <span class="text-lg font-black text-slate-800 uppercase tracking-tight">Exportar Texto (.txt)</span>
                     </button>
                     <button onclick="exportFullBackup()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-slate-100 rounded-3xl hover:bg-slate-100 transition group">
                         <i data-lucide="database" class="w-8 h-8 text-slate-400"></i>
@@ -88,7 +88,11 @@
                     <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2 mb-4 italic"><i data-lucide="book-open" class="text-blue-600"></i> O que é o Sistematiza?</h3>
                     <p class="text-slate-600 text-lg">O **Sistematiza** é um ambiente digital de "Segunda Memória". Projetado para organizar o trabalho intelectual com **Simplicidade**, **Privacidade** e **Autonomia**.</p>
                 </section>
-                </article>
+                <section class="bg-slate-900 text-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3"><i data-lucide="cloud-check" class="text-blue-400"></i> Sincronização Soberana</h3>
+                    <p class="text-slate-100 text-lg">Este app utiliza a tecnologia **PouchDB** integrada ao seu servidor pessoal **CouchDB**. Seus dados são sincronizados em tempo real entre seus dispositivos, sem intermediários corporativos.</p>
+                </section>
+            </article>
         </div>
 
         <footer class="mt-auto py-12 border-t border-slate-200">
@@ -121,7 +125,7 @@
 
     <div id="styleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[200]">
         <div class="bg-white w-full max-w-xl rounded-[2.5rem] p-8 shadow-2xl">
-            <h3 class="text-2xl font-bold mb-6 italic">Guia de Estilo Literário</h3>
+            <h3 class="text-2xl font-bold mb-6 italic">Diretrizes de Estilo Literário</h3>
             <textarea id="styleGuide" rows="8" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             <div class="flex justify-end gap-3"><button onclick="closeStyleModal()" class="px-6 py-3 text-slate-400 font-bold">Fechar</button><button onclick="saveStyle()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold">Salvar</button></div>
         </div>
