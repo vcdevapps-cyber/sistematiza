@@ -46,7 +46,7 @@
                 <div>
                     <h2 id="viewTitle" class="text-5xl font-black text-slate-900 tracking-tighter italic">Acervo</h2>
                     <div class="flex items-center gap-2">
-                        <p class="text-slate-500 text-sm font-bold uppercase tracking-widest">Gestão de Conhecimento</p>
+                        <p class="text-slate-500 text-sm font-bold uppercase tracking-widest">Gestão Intelectual</p>
                         <i id="sync-icon" data-lucide="cloud-off" class="w-5 h-5 text-slate-300 transition-all duration-500"></i>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button onclick="exportTXTReport()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-emerald-100 rounded-3xl hover:bg-emerald-50 transition group">
                         <i data-lucide="file-text" class="w-8 h-8 text-emerald-600"></i>
-                        <span class="text-lg font-black text-slate-800 uppercase tracking-tight">Exportar Texto (.txt)</span>
+                        <span class="text-lg font-black text-slate-800 uppercase tracking-tight">Exportar (.txt)</span>
                     </button>
                     <button onclick="exportFullBackup()" class="flex items-center justify-center gap-4 p-6 bg-white border-2 border-slate-100 rounded-3xl hover:bg-slate-100 transition group">
                         <i data-lucide="database" class="w-8 h-8 text-slate-400"></i>
@@ -86,11 +86,7 @@
             <article class="prose max-w-none space-y-10">
                 <section>
                     <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2 mb-4 italic"><i data-lucide="book-open" class="text-blue-600"></i> O que é o Sistematiza?</h3>
-                    <p class="text-slate-600 text-lg">O **Sistematiza** é um ambiente digital de "Segunda Memória". Projetado para organizar o trabalho intelectual com **Simplicidade**, **Privacidade** e **Autonomia**.</p>
-                </section>
-                <section class="bg-slate-900 text-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl">
-                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3"><i data-lucide="cloud-check" class="text-blue-400"></i> Sincronização Soberana</h3>
-                    <p class="text-slate-100 text-lg">Este app utiliza a tecnologia **PouchDB** integrada ao seu servidor pessoal **CouchDB**. Seus dados são sincronizados em tempo real entre seus dispositivos, sem intermediários corporativos.</p>
+                    <p class="text-slate-600 text-lg">Ambiente digital de <strong>Segunda Memória</strong> para a organização da práxis intelectual, integrando PouchDB e CouchDB para soberania total dos dados.</p>
                 </section>
             </article>
         </div>
@@ -100,7 +96,7 @@
                 <div class="p-4 bg-blue-100 text-blue-700 rounded-full"><i data-lucide="graduation-cap" class="w-8 h-8"></i></div>
                 <div class="text-center md:text-left">
                     <p class="text-sm font-black text-slate-800 uppercase tracking-widest">2025 • Sistematiza</p>
-                    <p class="text-slate-500 text-sm italic font-medium">App desenvolvido para educação pelo <span class="text-blue-700 font-black">Professor Sérgio Araújo</span>.</p>
+                    <p class="text-slate-500 text-sm italic font-medium">Soberania de Dados por <span class="text-blue-700 font-black">Sérgio Araújo</span>.</p>
                 </div>
             </div>
         </footer>
@@ -117,7 +113,7 @@
                     <option value="🗃️ Fontes">🗃️ Fontes / Referências</option>
                     <option value="🤖 IA">🤖 Laboratório / IA</option>
                 </select>
-                <input type="text" id="tags" placeholder="Tags (separadas por vírgula)" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                <input type="text" id="tags" placeholder="Tags" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none">
             </div>
             <div class="flex gap-4"><button onclick="closeModal()" class="flex-1 py-4 text-slate-400 font-bold hover:bg-slate-50 rounded-2xl transition">Cancelar</button><button onclick="saveNote()" class="flex-[2] bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-100">Guardar</button></div>
         </div>
@@ -125,7 +121,7 @@
 
     <div id="styleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 z-[200]">
         <div class="bg-white w-full max-w-xl rounded-[2.5rem] p-8 shadow-2xl">
-            <h3 class="text-2xl font-bold mb-6 italic">Diretrizes de Estilo Literário</h3>
+            <h3 class="text-2xl font-bold mb-6 italic">Guia de Estilo</h3>
             <textarea id="styleGuide" rows="8" class="w-full border border-slate-200 rounded-2xl p-5 bg-slate-50 mb-6 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             <div class="flex justify-end gap-3"><button onclick="closeStyleModal()" class="px-6 py-3 text-slate-400 font-bold">Fechar</button><button onclick="saveStyle()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold">Salvar</button></div>
         </div>
